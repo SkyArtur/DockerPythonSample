@@ -18,18 +18,22 @@ necessário, pois, para este projeto foi escolhido como foco para a implementaç
 recursividade e decoradores.
 
 ```python
-def decoradora(funcao):
-    def interna(label, __control: int = 5, **kwargs):
-        resposta = funcao(input(label), **kwargs)
-        if resposta is None:
-            print('Mensagem de erro!')
-            return interna(label, __control - 1, **kwargs)
-        return resposta
-    return interna
+def input_pattern(input_any):
+    def _input(label_input: str, __control: int = 5, **kwargs) -> str | float:
+        user_input = input_any(input(label_input), **kwargs)
+        if user_input is None:
+            if __control > 0:
+                return _input(label_input, __control - 1, **kwargs)
+            else:
+                raise RuntimeError('Limite da chamadas recursivas.')
+        return user_input
 
-@decoradora
-def decorada(label, **kwargs):
-    _input_user = label
+    return _input
+
+
+@input_pattern
+def input_anything(user_input: str):
+    _input_user = user_input
     if not _input_user:
         return None
     return _input_user
