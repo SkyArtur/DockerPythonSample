@@ -1,12 +1,12 @@
 from tests import *
-from functions.inputs import input_pattern
+from functions.inputs.input_pattern import input_pattern
 
 
 @input_pattern
 def somente_letras(user_input: str):
     """Implementando uma função simples para validação do input."""
     if not user_input.isalpha():
-        return False
+        return None
     return user_input
 
 
