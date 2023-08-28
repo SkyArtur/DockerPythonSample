@@ -90,7 +90,10 @@ class Document:
 O objeto criado pode então escolher quais atributos instânciar, tendo em vista que estes objetos serão utilizados para
 armazenar os dados em transações dentro do nosso sistema.
 ```python
-class Pessoa(Personal, Document):
+from objects.data_objects import *
+
+
+class Person(Personal, Document):
     def __init__(self, **kwargs):
         self.first_name = kwargs.get('first_name')
         self.last_name = kwargs.get('last_name')
@@ -104,4 +107,40 @@ class Pessoa(Personal, Document):
 
 ```
 
-###  Parte 3 - Models
+###  3ª Parte - Models
+Construção da model para manipulação do arquivo que será usado para persistência de dados. A model é um objeto singleton
+que servirá de uma pequena introdução ao assunto "Design Patterns". Ele será responsável por ler e escrever em um arquivo
+json e será uma extensão do objeto criado anteriormente. É interessante que atributos do objeto sejam utilizados, como 
+o método __dict__ e etc. A model então implementa os métodos necessários para manipular o arquivo da dados.
+```python
+import json
+from pathlib import Path
+from objects import Person
+
+
+class ModelPerson(Person):
+    __instance = None
+    __path = Path(__file__).resolve().parent.parent.joinpath('db/students.json')
+
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None or not cls.__instance:
+            cls.__instance = super(ModelPerson, cls).__new__(cls)
+        return cls.__instance
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.__check_files()
+
+    def __check_files(self):
+        if not self.__path.exists():
+            self.__write_file({})
+
+    def __read_file(self):
+        with open(self.__path, 'r', encoding='utf8') as file:
+            return json.load(file)
+
+    def __write_file(self, data):
+        ...
+
+    ...
+```
