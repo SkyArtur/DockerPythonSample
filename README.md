@@ -10,7 +10,7 @@ um arquivo json para persistência de dados. As views herdam as models e gerenci
 O controller por sua vez, instancia as view e disponibiliza o método de execução. O arquivo main.py, fica sendo 
 responsável por executar as operações do controller.
 
-### 1ª PARTE - Functions
+### 1ª Parte - Functions
 
 O módulo 'functions' terá, entre outros, o módulo 'inputs' que fornecerá os mecanismos para coleta e tratamento de 
 dados da aplicação. Cinco funções foram desenvolvidas para este objetivo. Um conhecimento básico sobre funções é 
@@ -45,3 +45,63 @@ realize a validação e tratamento do dado fornecido, além disso, realiza a rec
 o número de chamadas recursivas realizadas. Ficando assim para as demais funções (input_name(), input_date(), etc)
 a responsabilidade de tratar os dados específicos que recebem e sinalizarem para o pattern o dado recebido validado e 
 tratado ou None, caso a validação falhe.
+
+### 2ª Parte - Objects
+
+A segunda parte consiste da criação dos objetos de dados que serão usados para construir objetos mais complexos. Estes
+objetos são dataclasses que fornecerão atributos para os objetos maiores. Os objetos maiores, então, escolhem quais 
+atributos irá instanciar. Os objetos de dados também possuirão uma forma de exibir seus dados com mais inteligência 
+utilizando operações ternárias dentro de f-strings.
+```python
+from dataclasses import dataclass
+
+
+@dataclass
+class Personal:
+    first_name: str | None = None
+    last_name: str | None = None
+    birth: str | None = None
+    
+    def __repr__(self):
+        return self.__str__()
+    
+    def __str__(self):
+        return str(
+            f'Nome: {self.first_name} {self.last_name if self.last_name is not None else ""}'
+            f'\n{"Nascimento: " + self.birth if self.birth is not None else ""}'
+        ).strip()
+    
+
+@dataclass
+class Document:
+    cpf: str | None = None    
+    rg: str | None = None
+    
+    def __repr__(self):
+        return self.__str__()
+    
+    def __str__(self):
+        return str(
+            f'CPF: {self.cpf}'
+            f'\n{"RG: " + self.rg if self.rg is not None else ""}'
+        ).strip()
+  
+``` 
+O objeto criado pode então escolher quais atributos instânciar, tendo em vista que estes objetos serão utilizados para
+armazenar os dados em transações dentro do nosso sistema.
+```python
+class Pessoa(Personal, Document):
+    def __init__(self, **kwargs):
+        self.first_name = kwargs.get('first_name')
+        self.last_name = kwargs.get('last_name')
+        self.cpf = kwargs.get('cpf')
+
+    def __str__(self):
+        return str(
+            f'\n{Personal.__str__(self)}'
+            f'\n{Document.__str__(self)}'
+        ).strip()
+
+```
+
+###  Parte 3 - Models

@@ -1,7 +1,10 @@
+from dataclasses import dataclass
+
+
+@dataclass
 class Contact:
-    def __init__(self, **kwargs):
-        self.telephone = kwargs.get('telephone')
-        self.email = kwargs.get('email')
+    telephone: str | None = None
+    email: str | None = None
 
     def __repr__(self):
         return self.__str__()

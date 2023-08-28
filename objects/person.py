@@ -1,15 +1,16 @@
-from .data_objects import *
+from .data_objects import Personal, Document
 
 
-class Person(Personal, Contact, Address):
+class Person(Personal, Document):
     def __init__(self, **kwargs):
-        Personal.__init__(self, **kwargs)
-        Contact.__init__(self, **kwargs)
-        Address.__init__(self, **kwargs)
+        self.id = kwargs.get('id')
+        self.first_name = kwargs.get('first_name')
+        self.last_name = kwargs.get('last_name')
+        self.birth = kwargs.get('birth')
+        self.cpf = kwargs.get('cpf')
 
     def __str__(self):
         return str(
-            f'{Personal.__str__(self)}\n'
-            f'{Contact.__str__(self)}\n'
-            f'{Address.__str__(self)}'
-        ).strip()
+            f'\n{Personal.__str__(self)}'
+            f'\n{Document.__str__(self)}'
+        )
