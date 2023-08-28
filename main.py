@@ -1,3 +1,7 @@
-from views import ViewPerson
+from controller import ControllerPerson
 
-ViewPerson.delete_person()
+if __name__ == '__main__':
+    program = ControllerPerson()
+    program.opening()
+    while program.execute:
+        program.menu()

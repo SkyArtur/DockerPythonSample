@@ -1,0 +1,8 @@
+Escolha o que deseja fazer a seguir:
+    [1] Cadastrar nova pessoa;
+    [2] Atualizar nome de pessoa;
+    [3] Buscar por pessoa;
+    [4] Visualizar todas as pessoas;
+    [5] Deletar uma pessoa;
+    [0] SAIR;
+?:
