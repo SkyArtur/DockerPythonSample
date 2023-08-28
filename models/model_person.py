@@ -44,15 +44,15 @@ class ModelPerson(Person):
             print('Pessoa não encontrada!')
             return False
         else:
-            print(self)
+            print(f'{"+" * 50}', self, f'{"+" * 50}', sep='\n')
             return True
-    
+
     def fetchall(self):
         try:
-            print(f"{'Nome':^15}|{'Sobrenome':^15}|{'Nascimento':^15}|{'CPF':^15}")
+            print(f"{'id':^7}|{'Nome':^20}|{'Sobrenome':^37}|{'Nascimento':^15}|{'CPF':^18}\n{'-' * 100}")
             for item in self.__read_file().values():
                 self.__dict__.update(item)
-                print(f"{self.first_name:^15}|{self.last_name:^15}|{self.birth:^15}|{self.cpf:^15}")
+                print(f"{self.id:^7}| {self.first_name:<19}|  {self.last_name:<35}|{self.birth:^15}|{self.cpf:^18}")
         except FileNotFoundError:
             print('Arquivo não encontrado!')
             return False

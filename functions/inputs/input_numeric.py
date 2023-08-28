@@ -25,7 +25,8 @@ def input_numeric(user_input: str, **kwargs) -> float | None:
                     raise ValueError
     except ValueError:
         print(
-            str(f'ErrorNumeric :: {user_input} :: Somente numerais neste campo!'
+            str(
+                f'ErrorNumeric :: {user_input} :: Somente numerais neste campo!'
                 f'\n{msg_min if msg_min is not None else ""}'
                 f'\n{msg_max if msg_max is not None else ""}'
             ).strip()
