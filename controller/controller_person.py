@@ -33,7 +33,7 @@ class ControllerPerson:
             )
         )
 
-    def menu(self):
+    def run(self):
         resp = input_numeric(self.__read_file('menu.txt'), minn=0, maxx=5)
         if resp == 1:
             self.clear_screen()

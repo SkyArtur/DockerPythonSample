@@ -14,5 +14,5 @@ class TestCaseInputName(TestCase):
     def test_validacao_do_input_do_usuario(self):
         """Teste da chamada recursiva para um nome inválido, seguido de um válido."""
         name = input_name('Digite o nome: ')
-        self.assertEqual(name, 'Aline Santos' or input_name)
+        self.assertEqual(name, 'Aline Santos')
         self.assertEqual(self.mock_input.call_count, 2)

@@ -201,4 +201,122 @@ realizar operações mais simples.
 
 ### 5ª Parte - Controller e main.py 
 
-Para esta parte 
+Esta seria a última parte do desenvolvimento da aplicação, onde passamos para o controller a view que ele executará.
+Ele recebe esta view como um atributo de instância privado e, a partir de um de seus métodos, apresenta um menu para 
+o usuário com as operações do programa, que serão realizadas pela view. O método run() de controller é uma simples 
+sequência de asserções condicionais que verifica qual opção o usuário escolheu. O tratamento da entrada do usuário, 
+feito pela função, input_numeric(), garante que usuário não realize digitações equivocadas que possam interromper a 
+execução da aplicação.
+```python
+import os
+from functions import input_numeric
+from views import ViewPerson
+from pathlib import Path
+
+
+class ControllerPerson:
+    def __init__(self):
+        self.__templates = Path(__file__).resolve().parent.parent.joinpath('templates')
+        self.__view = ViewPerson()
+        self.__execute = True
+    
+    ...
+    
+    def run(self):
+        resp = input_numeric(self.__read_file('menu.txt'), minn=0, maxx=5)
+        if resp == 1:
+            self.clear_screen()
+            self.__view.new_person()
+        elif resp == 2:
+            self.clear_screen()
+            self.__view.update_person()
+        elif resp == 3:
+            self.clear_screen()
+            self.__view.get_one_person()
+        elif resp == 4:
+            self.clear_screen()
+            self.__view.get_all_persons()
+        elif resp == 5:
+            self.clear_screen()
+            self.__view.delete_person()
+        else:
+            self.__execute = False
+            self.clear_screen()
+            return
+        input('\n\nDigite qualquer tecla para continuar....')
+        self.clear_screen()
+
+```
+O controller também realiza a leitura de arquivo txt simples, para exibição do menu e da abertura do programa. Uma 
+propriedade 'execute()' foi criada para alterar o atributo '__execute', instanciado como True, a fim de controlar a
+execução do programa.
+Para o arquivo main.py, basta o import de controller e uma série simples de chamadas dos métodos do mesmo>
+```python
+from controller import ControllerPerson
+
+if __name__ == '__main__':
+    program = ControllerPerson()
+    while program.execute:
+        program.opening()
+        program.run()
+
+```
+
+### Testes
+
+O projeto também pode ser utilizado como material introdutório para o assunto TDD em Python. Alguns testes foram 
+realizados e podem servir de exemplos para o assunto. O mecanismo de teste utilizado foi o unittest, isso apenas para
+que o projeto não tivesse dependências externas que precisassem de instalações via pip.
+```python
+from tests import *
+from functions import input_name
+
+
+class TestCaseInputName(TestCase):
+    def setUp(self) -> None:
+        self.input_values = ['Aline Santos1', 'Aline Santos']
+        self.input_patch = patch('builtins.input', side_effect=self.input_values)
+        self.mock_input = self.input_patch.start()
+
+    def tearDown(self) -> None:
+        self.input_patch.stop()
+
+    def test_validacao_do_input_do_usuario(self):
+        """Teste da chamada recursiva para um nome inválido, seguido de um válido."""
+        name = input_name('Digite o nome: ')
+        self.assertEqual(name, 'Aline Santos')
+        self.assertEqual(self.mock_input.call_count, 2)
+```
+
+### Docker Image
+
+Para finalizar, construíremos a imagem docker do programa. Uma breve apresentação dos comandos básicos do docker, serve
+de base para o aprofundamento posterior no assunto com projetos de aplicações web mais robustas e reais. Após esta
+parte introdutória, segue-se com a edição do arquivo Dockerfile.
+```dockerfile
+FROM ubuntu:22.04
+LABEL maintainer='SkyArtur <sky_artur@hotmail.com>'
+WORKDIR /app
+COPY . .
+RUN apt update && apt upgrade -y && \
+    apt install python3 python3-dev python3-venv python3-pip -y
+CMD [ "python3", "main.py" ]
+```
+- Comandos:
+
+Criando a imagem.
+```shell
+docker build -t python_sample:01 .
+```
+Rodando o container.
+```shell
+docker run --name sample -it python_sample:01
+```
+Iniciando o container.
+```shell
+docker start -i sample
+```
+
+### Conclusão
+Sou apaixonado por programação, mas sou ainda mais apaixonado por educação e, como toda a mente curiosa, fico empolgado
+quanto maior é a dificuldade do desafio. Este projeto foi desenvolvido 
