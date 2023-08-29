@@ -316,7 +316,3 @@ Iniciando o container.
 ```shell
 docker start -i sample
 ```
-
-### Conclusão
-Sou apaixonado por programação, mas sou ainda mais apaixonado por educação e, como toda a mente curiosa, fico empolgado
-quanto maior é a dificuldade do desafio. Este projeto foi desenvolvido 
