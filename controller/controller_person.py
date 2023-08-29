@@ -24,12 +24,12 @@ class ControllerPerson:
         return os.system('cls' if os.name in 'nt' else 'clear')
 
     def opening(self):
-        date_hour = datetime.today()
+        date_time = datetime.today()
         self.clear_screen()
         print(
             self.__read_file('opening.txt').format(
-                date_hour.strftime('%d/%m/%Y'),
-                date_hour.strftime('%H:%M:%S')
+                date_time.strftime('%d/%m/%Y'),
+                date_time.strftime('%H:%M:%S')
             )
         )
 
