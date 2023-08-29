@@ -5,7 +5,9 @@ from objects import Person
 
 class ModelPerson(Person):
     __instance = None
-    __path = Path(__file__).resolve().parent.parent.joinpath('db/students.json')
+    __file = 'database.json'
+    __root = Path(__file__).resolve().parent.parent.joinpath('db')
+    __path = __root.joinpath(__file)
 
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None or not cls.__instance:
@@ -17,6 +19,8 @@ class ModelPerson(Person):
         self.__check_files()
 
     def __check_files(self):
+        if not self.__root.exists():
+            self.__root.mkdir()
         if not self.__path.exists():
             self.__write_file({})
 
